@@ -116,27 +116,35 @@
 
 @layer utilities {
   .glass-card {
-    @apply bg-card/60 backdrop-blur-xl border border-glass-border/30 rounded-2xl;
-    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    @apply bg-card/40 backdrop-blur-md border border-white/10 rounded-3xl;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+    transition: all 0.3s ease;
   }
 
-  .glass-card-strong {
-    @apply bg-card/80 backdrop-blur-xl border border-glass-border/40 rounded-2xl;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+  .bg-water-gradient {
+    @apply bg-gradient-to-br from-blue-600 via-blue-500 to-blue-400;
   }
 
-  .glow-accent {
-    box-shadow: 0 0 20px hsl(var(--primary) / 0.15),
-                0 0 60px hsl(var(--primary) / 0.05);
+  .bg-soft-blue {
+    @apply bg-blue-50/50 dark:bg-blue-900/10;
   }
 
-  .glow-accent-strong {
-    box-shadow: 0 0 30px hsl(var(--primary) / 0.25),
-                0 0 80px hsl(var(--primary) / 0.1);
+  .shadow-soft {
+    box-shadow: 0 10px 30px -10px rgba(0, 100, 255, 0.1);
   }
 
   .text-gradient-aqua {
-    @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(var(--primary)), hsl(187 80% 70%));
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-400;
+  }
+
+  .ripple-container {
+    @apply relative overflow-hidden;
+  }
+
+  .ripple-effect {
+    @apply absolute rounded-full bg-white/20 animate-ping pointer-events-none;
+    width: 100px;
+    height: 100px;
+    transform: translate(-50%, -50%);
   }
 }

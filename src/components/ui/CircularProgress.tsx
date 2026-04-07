@@ -4,12 +4,21 @@ interface CircularProgressProps {
   value: number;
   max: number;
   size?: number;
+  strokeWidth?: number;
+  color?: string;
   label: string;
   unit: string;
 }
 
-const CircularProgress = ({ value, max, size = 160, label, unit }: CircularProgressProps) => {
-  const strokeWidth = 8;
+const CircularProgress = ({ 
+  value, 
+  max, 
+  size = 160, 
+  strokeWidth = 8, 
+  color = "hsl(var(--primary))",
+  label, 
+  unit 
+}: CircularProgressProps) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const percentage = Math.min(value / max, 1);
@@ -32,14 +41,14 @@ const CircularProgress = ({ value, max, size = 160, label, unit }: CircularProgr
             cy={size / 2}
             r={radius}
             fill="none"
-            stroke="hsl(var(--primary))"
+            stroke={color}
             strokeWidth={strokeWidth}
             strokeLinecap="round"
             strokeDasharray={circumference}
             initial={{ strokeDashoffset: circumference }}
             animate={{ strokeDashoffset: offset }}
             transition={{ duration: 1.2, ease: "easeOut" }}
-            style={{ filter: "drop-shadow(0 0 8px hsl(168 76% 64% / 0.4))" }}
+            style={{ filter: `drop-shadow(0 0 8px ${color === 'white' ? 'rgba(255,255,255,0.4)' : 'hsl(168 76% 64% / 0.4)'})` }}
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">

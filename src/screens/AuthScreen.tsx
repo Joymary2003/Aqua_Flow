@@ -7,7 +7,12 @@ import { toast } from "sonner";
 import { apiFetch } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 
-export default function AuthScreen() {
+interface AuthScreenProps {
+  onBack?: () => void;
+  onSuccess?: () => void;
+}
+
+export default function AuthScreen({ onBack, onSuccess }: AuthScreenProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,6 +30,7 @@ export default function AuthScreen() {
 
       login(data.token, data.user);
       toast.success("Welcome back, Joy!");
+      if (onSuccess) onSuccess();
     } catch (err: any) {
       toast.error(err.message || "Invalid credentials");
     } finally {
