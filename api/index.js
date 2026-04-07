@@ -32,39 +32,55 @@ const authenticate = (req, res, next) => {
 
 // --- AUTH ROUTES ---
 app.post('/api/auth/register', async (req, res) => {
-  const { email, password, name } = req.body;
-  if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
-
+  // Only allow if no users exist (initial setup)
   try {
-    const existing = await prisma.user.findUnique({ where: { email } });
-    if (existing) return res.status(400).json({ error: 'User already exists' });
+    const userCount = await prisma.user.count();
+    if (userCount > 0) {
+      return res.status(403).json({ error: 'Registration is disabled.' });
+    }
+
+    const { username, password, name } = req.body;
+    if (!username || !password) return res.status(400).json({ error: 'Username and password required' });
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
-      data: { email, password: hashedPassword, name }
+      data: { username, password: hashedPassword, name }
     });
 
     const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '7d' });
-    res.json({ token, user: { id: user.id, email: user.email, name: user.name, dailyGoal: user.dailyGoal } });
+    res.json({ token, user: { id: user.id, username: user.username, name: user.name, dailyGoal: user.dailyGoal } });
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
 });
 
 app.post('/api/auth/login', async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
+  const { username, password } = req.body;
+  
+  // Strict requirement: Joy / 1234
+  if (username !== 'Joy' || password !== '1234') {
+    return res.status(401).json({ error: 'Invalid credentials' });
+  }
 
   try {
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) return res.status(401).json({ error: 'Invalid credentials' });
-
-    const valid = await bcrypt.compare(password, user.password);
-    if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
+    let user = await prisma.user.findUnique({ where: { username: 'Joy' } });
+    
+    // If Joy doesn't exist yet (first login), create the user
+    if (!user) {
+      const hashedPassword = await bcrypt.hash('1234', 10);
+      user = await prisma.user.create({
+        data: { 
+          username: 'Joy', 
+          password: hashedPassword,
+          name: 'Joy'
+        }
+      });
+    }
 
     const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '7d' });
-    res.json({ token, user: { id: user.id, email: user.email, name: user.name, dailyGoal: user.dailyGoal } });
+    res.json({ token, user: { id: user.id, username: user.username, name: user.name, dailyGoal: user.dailyGoal } });
   } catch (error) {
+    console.error('Login error:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });

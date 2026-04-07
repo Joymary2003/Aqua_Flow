@@ -62,7 +62,7 @@ const ProfileScreen = ({ onNotificationTap, onUnitsTap, onPrivacyTap, onHelpTap,
         </motion.div>
         <div>
           <h2 className="text-base font-semibold text-foreground">{user?.name || "User"}</h2>
-          <p className="text-xs text-muted-foreground">{user?.email}</p>
+          <p className="text-xs text-muted-foreground">@{user?.username}</p>
           <p className="text-[10px] text-primary font-medium mt-1">Premium Plan</p>
         </div>
       </motion.div>

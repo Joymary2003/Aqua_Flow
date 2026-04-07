@@ -66,14 +66,14 @@ const PrivacySettings = ({ onBack }: PrivacySettingsProps) => {
 
       <motion.div variants={item} className="space-y-3">
         <button
-          onClick={() => toast.success("Your data export has been started. You'll receive an email shortly.")}
+          onClick={() => toast.success("Your data export has been started. You'll receive a notification shortly.")}
           className="w-full glass-card p-4 flex items-center gap-3 active:scale-[0.98] transition-transform"
         >
           <Download size={16} className="text-primary" />
           <span className="text-sm text-foreground font-medium">Export My Data</span>
         </button>
         <button
-          onClick={() => toast.error("Account deletion requires email confirmation. Check your inbox.")}
+          onClick={() => toast.error("Account deletion requires confirmation. Check your profile settings.")}
           className="w-full glass-card p-4 flex items-center gap-3 active:scale-[0.98] transition-transform"
         >
           <Trash2 size={16} className="text-destructive" />

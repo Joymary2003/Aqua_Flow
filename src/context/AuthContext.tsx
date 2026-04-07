@@ -3,7 +3,7 @@ import { apiFetch } from "@/lib/api";
 
 type User = {
   id: string;
-  email: string;
+  username: string;
   name: string | null;
   dailyGoal: number;
 };
