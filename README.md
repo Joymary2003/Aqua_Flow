@@ -1,31 +1,37 @@
-# Aqua Flow 💧
-
-A premium water tracking and leak detection application built with React, Vite, Express, and Prisma.
-
-## 🚀 Deployment (Vercel + PostgreSQL)
-
-This project is configured for seamless deployment on **Vercel** with a **PostgreSQL** database.
-
-### 1. Database Setup
-Create a PostgreSQL database using **Vercel Postgres**, **Supabase**, or **Neon**. Obtain your `DATABASE_URL`.
-
-### 2. Configure Vercel
-- Connect your repository to Vercel.
-- Add the following **Environment Variables**:
-  - `DATABASE_URL`: Your PostgreSQL connection string.
-  - `JWT_SECRET`: A secure random string for authentication.
-
-### 3. Initialize Database
-Run the following locally using your production `DATABASE_URL`:
-```bash
-npx prisma db push
-```
-
 ## 💻 Local Development
 
 ### Prerequisites
 - Node.js installed.
-- A local PostgreSQL instance (or use a development cloud DB).
+- **SQLite** is used by default for local development (no setup required).
+
+### Setup
+1. Clone the repository.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Ensure your `.env` file looks like this for local dev:
+   ```env
+   DATABASE_URL="file:./dev.db"
+   JWT_SECRET="your_secret_here"
+   ```
+4. Initialize the local database:
+   ```bash
+   npx prisma db push
+   ```
+5. Run the application:
+   ```bash
+   npm run dev
+   ```
+
+## 🚀 Ready for Vercel Deployment?
+
+When you are ready to push to production, follow these steps to switch to PostgreSQL:
+
+1. **Change Provider**: In `prisma/schema.prisma`, change `provider = "sqlite"` to `provider = "postgresql"`.
+2. **Setup Vercel**: Connect your repo to Vercel and add your `DATABASE_URL` (PostgreSQL) and `JWT_SECRET` in the dashboard.
+3. **Deploy**: Vercel will handle the rest!
+
 
 ### Setup
 1. Clone the repository.
