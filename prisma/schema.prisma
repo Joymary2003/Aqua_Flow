@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String     @id @default(uuid())
+  email         String     @unique
+  password      String
+  name          String?
+  dailyGoal     Int        @default(150)
+  units         String     @default("liters")
+  currency      String     @default("usd")
+  leakAlerts    Boolean    @default(true)
+  dailySummary  Boolean    @default(true)
+  weeklySummary Boolean    @default(false)
+  billReminders Boolean    @default(true)
+  savingTips    Boolean    @default(false)
+  waterLogs     WaterLog[]
+  alerts        Alert[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model WaterLog {
+  id        String   @id @default(uuid())
+  amount    Int // Liters consumed
+  date      DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Alert {
+  id          String   @id @default(uuid())
+  type        String // e.g., "leak", "high_usage"
+  title       String
+  description String
+  status      String   @default("active") // "active", "dismissed"
+  location    String?
+  date        DateTime @default(now())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+}
